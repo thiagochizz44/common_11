@@ -135,6 +135,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.mobiledata=false
 
+# DebugFS
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
+
 # Dexpreopt
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     Launcher3QuickStep \
