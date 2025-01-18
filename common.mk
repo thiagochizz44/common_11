@@ -31,6 +31,10 @@ DEVICE_PACKAGE_OVERLAYS += \
 # A/B
 AB_OTA_UPDATER := true
 
+# ART lowmem config
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.config.art_lowmem=true
+
 # AudioFX
 TARGET_EXCLUDES_AUDIOFX := true
 
