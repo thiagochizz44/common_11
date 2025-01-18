@@ -26,13 +26,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio.offload.buffer.size.kb=32 \
     vendor.audio.offload.gapless.enabled=true \
     vendor.audio.offload.multiaac.enable=true \
-    vendor.audio.offload.multiple.enabled=false \
-    vendor.audio.offload.passthrough=false \
     vendor.audio.offload.pstimeout.secs=3 \
     vendor.audio.offload.track.enable=true \
     vendor.audio.parser.ip.buffer.size=0 \
     vendor.audio.safx.pbe.enabled=true \
-    vendor.audio.tunnel.encode=false \
     vendor.audio.use.sw.alac.decoder=true \
     vendor.audio.use.sw.ape.decoder=true \
     vendor.audio_hal.in_period_size=144 \
@@ -41,9 +38,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.voice.path.for.pcm.voip=false
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    use.voice.path.for.pcm.voip=false
-
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    use.voice.path.for.pcm.voip=false \
     audio.offload.min.duration.secs=60 \
     persist.vendor.audio.hac.enable=false \
     ro.audio.monitorRotation=true
@@ -77,7 +72,7 @@ PRODUCT_ODM_PROPERTIES += \
     vendor.audio.feature.hwdep_cal.enable=false \
     vendor.audio.feature.incall_music.enable=true \
     vendor.audio.feature.keep_alive.enable=true \
-    vendor.audio.feature.kpi_optimize.enable=true \
+    vendor.audio.feature.kpi_optimize.enable=false \
     vendor.audio.feature.maxx_audio.enable=false \
     vendor.audio.feature.multi_voice_session.enable=true \
     vendor.audio.feature.ras.enable=true \
@@ -94,19 +89,44 @@ PRODUCT_ODM_PROPERTIES += \
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.bluetooth.a2dp_offload.disabled=false \
+    persist.bluetooth.a2dp_offload.cap=sbc-aptx-aptxtws-aptxhd-aac-ldac \
+    persist.vendor.bt.a2dp.aac_whitelist=false \
     persist.vendor.qcom.bluetooth.enable.splita2dp=true \
-    persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac \
     persist.vendor.qcom.bluetooth.soc=cherokee \
-    ro.bluetooth.a2dp_offload.supported=true \
-    vendor.qcom.bluetooth.soc=cherokee
+    ro.bluetooth.a2dp_offload.supported=true
+
+PRODUCT_PRODUCT_PROPERTIES += \
+    bluetooth.device.class_of_device=90,2,12 \
+    bluetooth.hardware.power.idle_cur_ma=0.01 \
+    bluetooth.hardware.power.operating_voltage_mv=3300 \
+    bluetooth.hardware.power.rx_cur_ma=9 \
+    bluetooth.hardware.power.tx_cur_ma=7 \
+    bluetooth.profile.a2dp.source.enabled?=true \
+    bluetooth.profile.asha.central.enabled?=true \
+    bluetooth.profile.avrcp.target.enabled?=true \
+    bluetooth.profile.bas.client.enabled?=true \
+    bluetooth.profile.gatt.enabled?=true \
+    bluetooth.profile.hfp.ag.enabled?=true \
+    bluetooth.profile.hid.device.enabled?=true \
+    bluetooth.profile.hid.host.enabled?=true \
+    bluetooth.profile.map.server.enabled?=true \
+    bluetooth.profile.opp.enabled?=true \
+    bluetooth.profile.pan.nap.enabled?=true \
+    bluetooth.profile.pan.panu.enabled?=true \
+    bluetooth.profile.pbap.server.enabled?=true \
+    bluetooth.profile.sap.server.enabled?=true
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.bluetooth.library_name=libbluetooth_qti.so \
-    vendor.bluetooth.soc=cherokee
+    vendor.bluetooth.soc=cherokee \
+    ro.bluetooth.library_name=libbluetooth_qti.so
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.camera.expose.aux=1
+    persist.vendor.camera.expose.aux=1 \
+    persist.vendor.camera.physical.num=5 \
+    persist.vendor.camera.privapp.list=org.lineageos.aperture \
+    vendor.camera.aux.packagelist=org.lineageos.aperture
 
 # Charger
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -123,7 +143,10 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 # Crypto
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.allow_encrypt_override=true \
-    ro.crypto.volume.filenames_mode=aes-256-cts
+    ro.crypto.dm_default_key.options_format.version=2 \
+    ro.crypto.volume.filenames_mode=aes-256-cts \
+    ro.crypto.volume.metadata.method=dm-default-key \
+    ro.crypto.volume.options=::v2
 
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -133,6 +156,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapsize=512m \
     dalvik.vm.heapstartsize=8m \
     dalvik.vm.heaptargetutilization=0.75
+
+# Disable Skia tracing by default
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    debug.hwui.skia_atrace_enabled=false
 
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -146,15 +173,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.display.enable_optimize_refresh=1 \
     vendor.display.use_smooth_motion=1 \
     vendor.display.disable_offline_rotator=1 \
-    vendor.display.disable_hw_recovery_dump=1
+    vendor.display.disable_hw_recovery_dump=1 \
+    vendor.display.idle_time=0
 
 # DRM
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
-
-# FM
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.fm.use_audio_session=true
 
 # FRP
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -169,20 +193,27 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.egl.hw=0 \
     debug.mdpcomp.logs=0 \
     debug.sf.hw=0 \
-    debug.sf.latch_unsignaled=1 \
+    debug.sf.auto_latch_unsignaled=0 \
     persist.demo.hdmirotationlock=false \
     persist.sys.sf.color_saturation=1.0 \
     persist.sys.sf.native_mode=1 \
     persist.sys.sf.force_brightness_capability=1 \
-    debug.sf.enable_gl_backpressure=1 \
+    debug.sf.disable_client_composition_cache=1 \
+    debug.sf.enable_adpf_cpu_hint=true \
+    debug.sf.enable_gl_backpressure=0 \
+    debug.sf.latch_unsignaled=1 \
     ro.opengles.version=196610 \
     ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.sm6150.api30 \
     vendor.display.enable_default_color_mode=1 \
     vendor.gralloc.disable_ubwc=0
 
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.sf.blurs_are_expensive=1 \
-    debug.sf.enable_hwc_vds=1
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.enable_hwc_vds=0
+
+# HWUI
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.hwui.use_hint_manager=true \
+    debug.hwui.target_cpu_time_percent=30
 
 # IMS
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -190,15 +221,33 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.dbg.vt_avail_ovr=1  \
     persist.dbg.wfc_avail_ovr=1
 
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.qcom.ims.use_moto_vt_ext=true
+
 # Incremental FS
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.incremental.enable=1
 
+# LMKd
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.lmk.thrashing_limit=200 \
+    ro.lmk.swap_free_low_percentage=10 \
+    ro.lmk.psi_partial_stall_ms=120 \
+    ro.lmk.swap_util_max=100 \
+    ro.lmk.threshold_decay=30 \
+    ro.lmk.thrashing_limit_decay=50 \
+    ro.lmk.critical_upgrade=true \
+    ro.lmk.upgrade_pressure=40 \
+    ro.lmk.downgrade_pressure=60
+
+# Logs
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    persist.log.tag.OpenGLRenderer=S
+
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     media.settings.xml=/vendor/etc/media_profiles_vendor.xml \
-    debug.stagefright.ccodec=1 \
-    debug.stagefright.omx_default_rank=0 \
+    media.stagefright.thumbnail.prefer_hw_codecs=true \
     persist.vendor.media.recorder.bt709=true
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
@@ -210,15 +259,14 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_PRODUCT_PROPERTIES += \
     media.stagefright.thumbnail.prefer_hw_codecs=true
 
-# Memory optimizations
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.vendor.qti.sys.fw.bservice_age=5000 \
-    ro.vendor.qti.sys.fw.bservice_enable=true \
-    ro.vendor.qti.sys.fw.bservice_limit=8
-
 # Netflix
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.netflix.bsp_rev=Q6150-17263-1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.ssr.restart_level=ALL_ENABLE \
+    vendor.build.customerid=retail \
+    ro.vendor.mot.factory=false
 
 # NFC
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
@@ -236,17 +284,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=libqti-perfd-client.so
 
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.vendor.qti.sys.fw.bg_apps_limit=60
-
-# Qualcomm System Daemon
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.qcomsysd.enabled=1
-
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.build.vendorprefix=/vendor \
-    ro.vendor.radio.imei.sv=11 \
+    ro.vendor.radio.imei.sv=22 \
     persist.vendor.data.iwlan.enable=true \
     persist.vendor.radio.custom_ecc=1 \
     persist.vendor.radio.data_con_rprt=1 \
@@ -267,7 +308,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.radio.sw_mbn_update=0 \
     persist.vendor.radio.sar_sensor=1 \
     persist.vendor.radio.fi_supported=0 \
-    persist.vendor.radio.rat_on=other \
+    persist.vendor.radio.rat_on=combine \
     persist.vendor.radio.hidl_dev_service=1 \
     persist.vendor.lte.pco_supported=true \
     persist.vendor.radio.enableadvancedscan=true \
@@ -282,11 +323,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     DEVICE_PROVISIONED=1 \
+    persist.sys.fflag.override.settings_provider_model=false \
     persist.vendor.data.mode=concurrent \
     ril.subscription.types=NV,RUIM \
-    ro.telephony.default_network=10,10 \
+    ro.telephony.default_network=33,33 \
     ro.vendor.use_data_netmgrd=true \
-    telephony.lteOnCdmaDevice=1,1
+    telephony.lteOnCdmaDevice=1
 
 # SurfaceFlinger
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -294,10 +336,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.surface_flinger.has_HDR_display=true \
     ro.surface_flinger.use_color_management=true \
     ro.surface_flinger.wcg_composition_dataspace=143261696 \
-    ro.surface_flinger.protected_contents=true
-
-PRODUCT_PRODUCT_PROPERTIES += \
-    ro.surface_flinger.supports_background_blur=1
+    ro.surface_flinger.protected_contents=true \
+    ro.surface_flinger.enable_frame_rate_override=false \
+    ro.surface_flinger.clear_slots_with_set_layer_buffer=true
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     debug.sf.use_phase_offsets_as_durations=1 \
@@ -310,7 +351,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 # Sensor
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    persist.vendor.sensors.enable.mag_filter=true
+    ro.vendor.sensors.mot_ltv=true \
+    persist.vendor.sensors.enable.mag_filter=true \
+    persist.vendor.sensors.hal_trigger_ssr=true \
+    persist.vendor.sensors.odl.adsp=true
 
 # Time
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -320,11 +364,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     config.disable_rtt=true
 
-# WFD
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    persist.debug.wfd.enable=1 \
-    persist.sys.wfd.virtual=0
-
 # Zygote
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     persist.device_config.runtime_native.usap_pool_enabled=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    zygote.critical_window.minute=10
