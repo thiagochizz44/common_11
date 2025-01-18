@@ -31,6 +31,9 @@ DEVICE_PACKAGE_OVERLAYS += \
 # A/B
 AB_OTA_UPDATER := true
 
+# AudioFX
+TARGET_EXCLUDES_AUDIOFX := true
+
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
