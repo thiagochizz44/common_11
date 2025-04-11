@@ -49,8 +49,14 @@ BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.console=ttyMSM0 co
 TARGET_KERNEL_SOURCE := kernel/motorola/sm6150
 TARGET_FORCE_PREBUILT_KERNEL := true
 TARGET_KERNEL_VERSION := 4.14
-TARGET_PREBUILT_KERNEL := device/motorola/odessa-kernel/Image.gz-dtb
+TARGET_PREBUILT_KERNEL := device/motorola/odessa-kernel/Image
 BOARD_PREBUILT_DTBOIMAGE := device/motorola/odessa-kernel/dtbo.img
+BOARD_PREBUILT_DTBIMAGE_DIR := device/motorola/odessa-kernel/dtb.img
+
+# Kernel
+ LOCAL_KERNEL := device/motorola/odessa-kernel/Image
+ PRODUCT_COPY_FILES += \
+     $(LOCAL_KERNEL):kernel
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
