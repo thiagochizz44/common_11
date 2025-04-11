@@ -31,10 +31,6 @@ DEVICE_PACKAGE_OVERLAYS += \
 # A/B
 AB_OTA_UPDATER := true
 
-# ART lowmem config
-PRODUCT_PRODUCT_PROPERTIES += \
-    ro.config.art_lowmem=true
-
 # AudioFX
 TARGET_EXCLUDES_AUDIOFX := true
 
@@ -110,11 +106,16 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.atrace@1.0-service
 
-# Android GO tunning
+# Android Go
+PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true 
 PRODUCT_DEX_PREOPT_BOOT_IMAGE_PROFILE_LOCATION := frameworks/base/config/boot-image-profile.txt
 PRODUCT_USE_PROFILE_FOR_BOOT_IMAGE := true
 USE_DEX2OAT_DEBUG := false
 WITH_DEXPREOPT_DEBUG_INFO := false
+
+# Disable async MTE on system_server
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    arm64.memtag.process.system_server=off
 
 # Do not generate libartd.
 PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
@@ -123,6 +124,30 @@ PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
 # the size of the system image. This has no bearing on stack traces, but will
 # leave less information available via JDWP.
 PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
+
+# Reduce SystemServer Debug
+PRODUCT_SYSTEM_SERVER_DEBUG_INFO := false
+
+# Scudo
+PRODUCT_DISABLE_SCUDO := true
+TARGET_VNDK_USE_CORE_VARIANT := true
+
+# Don't compile SystemUITests
+EXCLUDE_SYSTEMUI_TESTS := true
+
+# Java Optimizations
+SYSTEM_OPTIMIZE_JAVA := true
+SYSTEMUI_OPTIMIZE_JAVA := true
+FULL_SYSTEM_OPTIMIZE_JAVA := true
+
+# DebugFS
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
+
+# Dexpreopt
+PRODUCT_DEXPREOPT_SPEED_APPS += \
+    Launcher3QuickStep \
+    SystemUI \
+    Settings
 
 # Speed profile services and wifi-service to reduce RAM and storage
 PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed-profile
@@ -134,15 +159,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Mobile data
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.mobiledata=false
-
-# DebugFS
-PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
-
-# Dexpreopt
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    Launcher3QuickStep \
-    SystemUI \
-    Settings
 
 # Audio
 PRODUCT_PACKAGES += \
